@@ -17,7 +17,7 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone https://github.com/ваш-username/calculator-web.git
+git clone https://github.com/dvbgm/calculator-web.git
 cd calculator-web
 ```
 
