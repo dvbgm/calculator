@@ -18,13 +18,21 @@
 ### 1. Клонирование репозитория
 ```bash
 git clone https://github.com/dvbgm/calculator.git
-cd calculator-web
+cd calculator
 ```
 
 ### 2. Установка зависимостей
 ```bash
 sudo apt update
-sudo apt install -y build-essential make g++ git docker.io libboost-dev libboost-system-dev
+sudo apt install -y \
+    build-essential \
+    make \
+    g++ \
+    git \
+    docker.io \
+    libboost-dev \
+    libboost-system-dev \
+    catch2
 ```
 
 ## Сборка и запуск
@@ -37,8 +45,8 @@ make build      # Сборка проекта
 
 ### Сборка и запуск в Docker
 ```bash
-docker build -t calculator-web .
-docker run -p 8080:8080 --rm calculator-web
+docker build -t calculator .
+docker run -p 8080:8080 --rm calculator
 ```
 
 ## Использование API
@@ -65,10 +73,6 @@ http://localhost:8080/calculate?a=5&b=3&op=+
 ```bash
 curl "http://localhost:8080/calculate?a=10&b=2&op=/"
 ```
-
-3. Через Postman:
-- Метод: GET
-- URL: `http://localhost:8080/calculate?a=8&b=4&op=*`
 
 ### Пример ответа:
 ```json
