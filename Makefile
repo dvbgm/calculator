@@ -1,11 +1,27 @@
-CXX = g++
-CXXFLAGS = -std=c++17 -I. -I/usr/local/include # Путь к Crow (если установлен в /usr/local/include)
-LDFLAGS = -lboost_system -lpthread  # Связывание с Boost
+CC = g++
+CFLAGS = -std=c++17 -Wall -I$(SRC_DIR) -I/usr/local/include/crow
+LIBS = -lboost_system -lboost_filesystem -lpthread
+TEST_LIBS =  # Пусто для Catch2
 
-all: calculator_app
+SRC_DIR = src
+TEST_DIR = tests
+BIN_DIR = bin
 
-calculator_app: main.cpp calculator.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+all: build test
+
+build: $(BIN_DIR)/calculator_server
+
+$(BIN_DIR)/calculator_server: $(SRC_DIR)/main.cpp $(SRC_DIR)/calculator.cpp $(SRC_DIR)/calculator.h
+	mkdir -p $(BIN_DIR)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+
+test: $(BIN_DIR)/calculator_tests
+	./$(BIN_DIR)/calculator_tests
+
+$(BIN_DIR)/calculator_tests: $(TEST_DIR)/test_calculator.cpp $(SRC_DIR)/calculator.cpp $(SRC_DIR)/calculator.h
+	$(CC) $(CFLAGS) $^ -o $@ $(TEST_LIBS)
 
 clean:
-	rm -f calculator_app
+	rm -rf $(BIN_DIR)
+
+.PHONY: all build test clean
