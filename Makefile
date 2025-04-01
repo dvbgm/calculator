@@ -1,27 +1,50 @@
-CC = g++
-CFLAGS = -std=c++17 -Wall -I$(SRC_DIR) -I/usr/local/include/crow
-LIBS = -lboost_system -lboost_filesystem -lpthread
-TEST_LIBS =  # Пусто для Catch2
+# Компилятор и флаги
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -std=c11
+LDFLAGS = -lm
 
+# Пути к файлам
 SRC_DIR = src
 TEST_DIR = tests
-BIN_DIR = bin
+BUILD_DIR = build
 
-all: build test
+# Файлы
+SOURCES = $(wildcard $(SRC_DIR)/*.c)
+OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
+TEST_SOURCES = $(wildcard $(TEST_DIR)/*.c)
+TEST_OBJECTS = $(patsubst $(TEST_DIR)/%.c, $(BUILD_DIR)/%.o, $(TEST_SOURCES))
+EXECUTABLE = calculator
+TEST_EXECUTABLE = test_calculator
 
-build: $(BIN_DIR)/calculator_server
+# Цель по умолчанию
+all: build
 
-$(BIN_DIR)/calculator_server: $(SRC_DIR)/main.cpp $(SRC_DIR)/calculator.cpp $(SRC_DIR)/calculator.h
-	mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+# Создание директории для сборки
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
-test: $(BIN_DIR)/calculator_tests
-	./$(BIN_DIR)/calculator_tests
+# Компиляция исходников
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN_DIR)/calculator_tests: $(TEST_DIR)/test_calculator.cpp $(SRC_DIR)/calculator.cpp $(SRC_DIR)/calculator.h
-	$(CC) $(CFLAGS) $^ -o $@ $(TEST_LIBS)
+# Компиляция тестов
+$(BUILD_DIR)/%.o: $(TEST_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
+# Сборка основного приложения
+build: $(OBJECTS)
+	$(CC) $(OBJECTS) -o $(EXECUTABLE) $(LDFLAGS)
+
+# Сборка тестов
+build_tests: $(OBJECTS) $(TEST_OBJECTS)
+	$(CC) $(OBJECTS) $(TEST_OBJECTS) -o $(TEST_EXECUTABLE) $(LDFLAGS)
+
+# Запуск тестов
+run_tests: build_tests
+	./$(TEST_EXECUTABLE)
+
+# Очистка
 clean:
-	rm -rf $(BIN_DIR)
+	rm -rf $(BUILD_DIR) $(EXECUTABLE) $(TEST_EXECUTABLE)
 
-.PHONY: all build test clean
+.PHONY: all build build_tests run_tests clean
