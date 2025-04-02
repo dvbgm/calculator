@@ -1,9 +1,15 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -I.
+CXXFLAGS = -std=c++11 -Wall -Wextra -Iinclude
 LDFLAGS = -lpthread
 
-SRC = main.cpp
+# Основная программа
+SRC_DIR = src
+SRC = $(SRC_DIR)/config6.cpp
 TARGET = calculator_server
+
+# Тесты
+TESTS_DIR = tests
+TESTS_SRC = $(TESTS_DIR)/tests.cpp
 TEST_TARGET = calculator_tests
 
 all: $(TARGET)
@@ -14,7 +20,7 @@ $(TARGET): $(SRC)
 test: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
-$(TEST_TARGET): tests.cpp
+$(TEST_TARGET): $(TESTS_SRC)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean:
