@@ -15,18 +15,12 @@ TEST_TARGET = calculator_tests
 all: $(TARGET)
 
 $(TARGET): $(SRC)
-	@echo "🔹 Сборка основного приложения..."
+	@echo "🔹 Сборка сервера..."
 	@$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-	@echo "✅ Готово: ./$(TARGET)"
 
 test: $(TEST_TARGET)
 	@echo "🔹 Запуск тестов..."
-	@if ./$(TEST_TARGET); then \
-		echo "✅ Все тесты пройдены!"; \
-	else \
-		echo "❌ Тесты завершились с ошибками!"; \
-		exit 1; \
-	fi
+	@./$(TEST_TARGET) && echo "✅ Все тесты пройдены!" || (echo "❌ Тесты упали!"; exit 1)
 
 $(TEST_TARGET): $(TESTS_SRC)
 	@echo "🔹 Компиляция тестов..."
@@ -34,6 +28,5 @@ $(TEST_TARGET): $(TESTS_SRC)
 
 clean:
 	@rm -f $(TARGET) $(TEST_TARGET)
-	@echo "🧹 Очистка проекта"
 
 .PHONY: all clean test
