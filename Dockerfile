@@ -1,31 +1,40 @@
-# === Этап сборки ===
-FROM ubuntu:22.04 as builder
+# Используем официальный образ с GCC для сборки
+FROM gcc:12.2.0 AS builder
 
-RUN apt update && apt install -y \
-    build-essential \
-    make \
-    g++ \
-    libboost-dev \
-    libboost-system-dev \
-    catch2
+# Устанавливаем зависимости (если нужны)
+RUN apt-get update && \
+    apt-get install -y \
+    cmake \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
+# Копируем исходный код в контейнер
 WORKDIR /app
 COPY . .
 
-RUN make build
+# Собираем проект
+RUN make
 
-# === Финальный образ ===
+# =============================================
+# Второй этап: создаём минимальный образ для запуска
 FROM ubuntu:22.04
 
-RUN apt update && apt install -y libboost-system-dev && \
-    useradd -m appuser && \
-    mkdir -p /app && \
-    chown -R appuser:appuser /app
+# Устанавливаем зависимости для runtime (если нужны)
+RUN apt-get update && \
+    apt-get install -y \
+    libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
 
+# Копируем бинарники из builder-этапа
 WORKDIR /app
-COPY --from=builder /app/bin/server .
+COPY --from=builder /app/calculator_server .
+COPY --from=builder /app/calculator_tests .
 
-USER appuser
+# Опционально: запуск тестов при сборке
+RUN ./calculator_tests && echo "✅ Все тесты пройдены!"
 
+# Открываем порт сервера
 EXPOSE 8080
-CMD ["./server"]
+
+# Запускаем сервер
+CMD ["./calculator_server"]
