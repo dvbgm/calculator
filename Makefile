@@ -1,36 +1,31 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra
+CXXFLAGS = -std=c++11 -Wall -Wextra -Iinclude
 LDFLAGS = -lpthread
+TEST_LDFLAGS = -lboost_unit_test_framework
 
-# Основные цели
+# Цели
 TARGET = calculator_server
 TEST_TARGET = calculator_tests
-
-# Цвета для вывода
-GREEN = \033[0;32m
-YELLOW = \033[0;33m
-RED = \033[0;31m
-NC = \033[0m
 
 .PHONY: all build test clean
 
 all: build
 
 build: $(TARGET)
-	@echo "${GREEN}✅ Сервер собран. Запустите вручную: ./$(TARGET)${NC}"
 
-$(TARGET): config6.cpp
-	@echo "${YELLOW}🔹 Компиляция сервера...${NC}"
+$(TARGET): src/config6.cpp
+	@echo "🔹 Building server..."
 	@$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+	@echo "✅ Server built. Run with: ./$(TARGET)"
 
 test: $(TEST_TARGET)
-	@echo "${YELLOW}🔹 Запуск тестов...${NC}"
-	@./$(TEST_TARGET) || (echo "${RED}❌ Тесты завершились с ошибками${NC}" && exit 1)
+	@echo "🔹 Running tests..."
+	@./$(TEST_TARGET) --log_level=test_suite
 
-$(TEST_TARGET): config6.cpp
-	@echo "${YELLOW}🔹 Компиляция тестовой версии...${NC}"
-	@$(CXX) $(CXXFLAGS) -DTEST_MODE -o $@ $^ $(LDFLAGS)
+$(TEST_TARGET): tests/tests.cpp src/calculator.cpp
+	@echo "🔹 Building tests..."
+	@$(CXX) $(CXXFLAGS) -o $@ $^ $(TEST_LDFLAGS)
 
 clean:
 	@rm -f $(TARGET) $(TEST_TARGET)
-	@echo "${YELLOW}🧹 Очистка проекта завершена${NC}"
+	@echo "🧹 Clean complete"
