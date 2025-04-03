@@ -4,7 +4,7 @@
 #include <functional>
 #include <sstream>
 #include <cstdlib>
-#include "../include/cpp-httplib/httplib.h"
+#include "C:\Users\xrxkw\Рабочий стол\config6\config6\include\cpp-httplib\httplib.h"
 
 using namespace httplib;
 using namespace std;
@@ -56,16 +56,15 @@ vector<double> parse_args(const string& arg_str) {
     vector<double> args;
     istringstream iss(arg_str);
     string token;
-
+    
     while (getline(iss, token, ',')) {
         try {
             args.push_back(stod(token));
-        }
-        catch (const exception& e) {
+        } catch (const exception& e) {
             throw runtime_error("Invalid argument: " + token);
         }
     }
-
+    
     return args;
 }
 
@@ -79,22 +78,22 @@ string generate_html(const string& operation, const vector<double>& args, double
         << "<h1>Operation Result</h1>"
         << "<p><strong>Operation:</strong> " << operation << "</p>"
         << "<p><strong>Arguments:</strong> ";
-
+    
     for (size_t i = 0; i < args.size(); ++i) {
         if (i != 0) oss << ", ";
         oss << args[i];
     }
-
+    
     oss << "</p><p class=\"result\"><strong>Result:</strong> " << result << "</p>"
         << "</body></html>";
-
+    
     return oss.str();
 }
 
-int main() {
+// Функция для запуска сервера
+void run_calculator_server() {
     Server svr;
 
-    // Обработчик GET запросов
     svr.Get("/calculate", [](const Request& req, Response& res) {
         if (!req.has_param("op") || !req.has_param("args")) {
             res.set_content("Missing parameters. Usage: /calculate?op=operation&args=arg1,arg2,...", "text/plain");
@@ -107,7 +106,7 @@ int main() {
 
         try {
             vector<double> args = parse_args(arg_str);
-
+            
             if (operations.find(operation) == operations.end()) {
                 throw runtime_error("Unknown operation: " + operation);
             }
@@ -115,14 +114,12 @@ int main() {
             double result = operations[operation](args);
             string html = generate_html(operation, args, result);
             res.set_content(html, "text/html");
-        }
-        catch (const exception& e) {
+        } catch (const exception& e) {
             res.set_content("Error: " + string(e.what()), "text/plain");
             res.status = 400;
         }
-        });
+    });
 
-    // Корневая страница с инструкциями
     svr.Get("/", [](const Request&, Response& res) {
         string html = R"(
 <!DOCTYPE html>
@@ -156,12 +153,15 @@ int main() {
 </html>
         )";
         res.set_content(html, "text/html");
-        });
+    });
 
-    cout << "Server started at http://localhost:8080\n";
-    cout << "Press Ctrl+C to stop the server\n";
-
-    svr.listen("localhost", 8080);
-
-    return 0;
+    // cout << "Server is ready at http://localhost:8080\n";
+    // cout << "Call 'run_calculator_server()' to start it\n";
 }
+
+// int main() {
+//     cout << "Calculator server application\n";
+//     cout << "Compile with: make\n";
+//     cout << "Then manually run the server by calling 'run_calculator_server()'\n";
+//     return 0;
+// }
