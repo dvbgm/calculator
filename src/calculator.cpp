@@ -1,10 +1,15 @@
-#include "calculator.h"
+#pragma once
+#include <vector>
+#include <stdexcept>
 
-float Calculator::add(float a, float b) { return a + b; }
-float Calculator::subtract(float a, float b) { return a - b; }
-float Calculator::multiply(float a, float b) { return a * b; }
+// Базовые арифметические операции
+double add(const std::vector<double>& args);
+double subtract(const std::vector<double>& args);
+double multiply(const std::vector<double>& args);
+double divide(const std::vector<double>& args);
 
-float Calculator::divide(float a, float b) {
-    if (b == 0) throw "Division by zero!";
-    return a / b;
-}
+// Тип операции
+using Operation = std::function<double(const std::vector<double>&)>;
+
+// Доступные операции
+extern const std::map<std::string, Operation> operations;
