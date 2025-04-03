@@ -3,29 +3,32 @@ CXXFLAGS = -std=c++11 -Wall -Wextra -Iinclude
 LDFLAGS = -lpthread
 TEST_LDFLAGS = -lboost_unit_test_framework
 
-# Цели
-TARGET = calculator_server
-TEST_TARGET = calculator_tests
+# Исходные файлы
+SRC = src/config6.cpp
+TEST_SRC = tests/tests.cpp
 
-.PHONY: all build test clean
+# Имена исполняемых файлов
+TARGET = calculator
+TEST_TARGET = test_calculator
 
-all: build
+all: $(TARGET) test
+	@echo "✅ Образ успешно собран"
 
-build: $(TARGET)
+$(TARGET): $(SRC)
+	$(CXX) $(CXXFLAGS) $^ -o $@
+	@echo "🔧 Собран основной исполняемый файл: $(TARGET)"
 
-$(TARGET): src/config6.cpp
-	@echo "🔹 Building server..."
-	@$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-	@echo "✅ Server built. Run with: ./$(TARGET) --run"
+$(TEST_TARGET): $(TEST_SRC) $(SRC)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+	@echo "🧪 Собран тестовый модуль: $(TEST_TARGET)"
 
 test: $(TEST_TARGET)
-	@echo "🔹 Running tests..."
-	@./$(TEST_TARGET) --log_level=test_suite
-
-$(TEST_TARGET): tests/tests.cpp src/config6.cpp
-	@echo "🔹 Building tests..."
-	@$(CXX) $(CXXFLAGS) -DTEST_MODE -o $@ $^ $(TEST_LDFLAGS)
+	@echo "🚀 Запуск тестов..."
+	@./$(TEST_TARGET) --log_level=test_suite || (echo "❌ Тесты не прошли"; exit 1)
+	@echo "✅ Все тесты успешно пройдены"
 
 clean:
-	@rm -f $(TARGET) $(TEST_TARGET)
-	@echo "🧹 Clean complete"
+	rm -f $(TARGET) $(TEST_TARGET)
+	@echo "🧹 Очистка скомпилированных файлов"
+
+.PHONY: all test clean
