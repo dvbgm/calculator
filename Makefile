@@ -22,7 +22,7 @@ test: $(TEST_TARGET)
 	@echo "🔹 Running tests..."
 	@./$(TEST_TARGET) --log_level=test_suite
 
-$(TEST_TARGET): tests/tests.cpp src/calculator.cpp
+$(TEST_TARGET): tests/tests.cpp src/config6.cpp
 	@echo "🔹 Building tests..."
 	@$(CXX) $(CXXFLAGS) -o $@ $^ $(TEST_LDFLAGS)
 
