@@ -1,37 +1,34 @@
-# Компилятор
 CXX := g++
-
-# Флаги компиляции
-CXXFLAGS := -std=c++11 -Wall -Wextra -Iinclude -Iinclude/cpp-httplib
-
-# Флаги линковки
+CXXFLAGS := -std=c++11 -Wall -Wextra -Iinclude
 LDFLAGS := -lboost_unit_test_framework -lpthread
 
-# Пути
+SRC_DIR := src
 BUILD_DIR := build
 
-# Основные цели
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
+
+TARGET := $(BUILD_DIR)/calculator
+TEST_TARGET := $(BUILD_DIR)/test_calculator
+
 .PHONY: all test clean
 
-all: $(BUILD_DIR)/config6
+all: $(TARGET)
 
-test: $(BUILD_DIR)/test_config6
-	@echo "🚀 Запуск тестов..."
-	@./$(BUILD_DIR)/test_config6 --log_level=test_suite
+test: $(TEST_TARGET)
+	@./$(TEST_TARGET)
 
-$(BUILD_DIR)/config6: src/config6.cpp | $(BUILD_DIR)
-	@echo "🔨 Сборка основного приложения..."
-	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
-	@echo "✅ Собрано: $@"
+$(TARGET): $(filter-out $(BUILD_DIR)/test_%,$(OBJS))
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
-$(BUILD_DIR)/test_config6: tests/tests.cpp | $(BUILD_DIR)
-	@echo "🧪 Компиляция тестов..."
-	$(CXX) $(CXXFLAGS) -DMAIN_DISABLED $< -o $@ $(LDFLAGS)
-	@echo "✅ Тесты собраны: $@"
+$(TEST_TARGET): $(filter-out $(BUILD_DIR)/config6.o,$(OBJS))
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BUILD_DIR):
 	@mkdir -p $@
 
 clean:
 	@rm -rf $(BUILD_DIR)
-	@echo "🧹 Очистка завершена"
