@@ -16,7 +16,7 @@ build: $(TARGET)
 $(TARGET): src/config6.cpp
 	@echo "🔹 Building server..."
 	@$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-	@echo "✅ Server built. Run with: ./$(TARGET)"
+	@echo "✅ Server built. Run with: ./$(TARGET) --run"
 
 test: $(TEST_TARGET)
 	@echo "🔹 Running tests..."
@@ -24,7 +24,7 @@ test: $(TEST_TARGET)
 
 $(TEST_TARGET): tests/tests.cpp src/config6.cpp
 	@echo "🔹 Building tests..."
-	@$(CXX) $(CXXFLAGS) -o $@ $^ $(TEST_LDFLAGS)
+	@$(CXX) $(CXXFLAGS) -DTEST_MODE -o $@ $^ $(TEST_LDFLAGS)
 
 clean:
 	@rm -f $(TARGET) $(TEST_TARGET)
