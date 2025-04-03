@@ -4,7 +4,7 @@
 #include <functional>
 #include <sstream>
 #include <cstdlib>
-#include "C:\Users\xrxkw\Рабочий стол\config6\config6\include\cpp-httplib\httplib.h"
+#include "../include/cpp-httplib/httplib.h"
 
 using namespace httplib;
 using namespace std;
