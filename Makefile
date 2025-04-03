@@ -34,9 +34,9 @@ $(TARGET): $(SRC) | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
 	@echo "✅ Собрано: $@"
 
-$(TEST_TARGET): $(TEST_SRC) $(SRC) | $(BUILD_DIR)
+$(TEST_TARGET): $(TEST_SRC) | $(BUILD_DIR)
 	@echo "🧪 Компиляция тестов..."
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
 	@echo "✅ Тесты собраны: $@"
 
 $(BUILD_DIR):
