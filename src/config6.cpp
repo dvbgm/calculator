@@ -155,13 +155,12 @@ void run_calculator_server() {
         res.set_content(html, "text/html");
     });
 
-    // cout << "Server is ready at http://localhost:8080\n";
-    // cout << "Call 'run_calculator_server()' to start it\n";
+     cout << "Server is ready at http://localhost:8080\n";
+     //cout << "Call 'run_calculator_server()' to start it\n";
 }
 
-// int main() {
-//     cout << "Calculator server application\n";
-//     cout << "Compile with: make\n";
-//     cout << "Then manually run the server by calling 'run_calculator_server()'\n";
-//     return 0;
-// }
+ int main() {
+     cout << "Starting calculator server...\n";
+     run_calculator_server();
+     return 0;
+}
