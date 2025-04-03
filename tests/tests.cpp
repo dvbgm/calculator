@@ -1,5 +1,5 @@
  #define BOOST_TEST_MODULE CalcTests
- include <boost/test/unit_test.hpp>
+ #include <boost/test/unit_test.hpp>
  #include "../src/config6.cpp" // Подключаем исходный файл для тестирования
  
  BOOST_AUTO_TEST_SUITE(BasicOperationsTests)
