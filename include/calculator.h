@@ -4,9 +4,13 @@
 #include <map>
 #include <functional>
 
-// Объявления вспомогательных функций
+// Парсинг аргументов
 std::vector<double> parse_args(const std::string& arg_str);
-std::string generate_html(const std::string& operation, 
-                         const std::vector<double>& args, 
-                         double result);
+
+// Генерация HTML
+std::string generate_html(const std::string& operation,
+                        const std::vector<double>& args,
+                        double result);
+
+// Запуск сервера
 void run_calculator_server();
