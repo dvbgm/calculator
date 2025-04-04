@@ -1,34 +1,35 @@
-CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra -Iinclude
-LDFLAGS := -lboost_unit_test_framework -lpthread
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -I./Crow/include
+LIBS = -lpthread
 
-SRC_DIR := src
-BUILD_DIR := build
+BOOST_DIR = /usr/lib/x86_64-linux-gnu
 
-SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
+# Путь к исходным файлам
+SRC_DIR = src
+TEST_DIR = tests
 
-TARGET := $(BUILD_DIR)/calculator
-TEST_TARGET := $(BUILD_DIR)/test_calculator
+# Исходники
+SRC = $(SRC_DIR)/calculator.cpp $(SRC_DIR)/main.cpp
+TEST_SRC = $(TEST_DIR)/test_calculator.cpp src/calculator.cpp
 
-.PHONY: all test clean
+# Исполнимая программа
+TARGET = app
+TEST_EXEC = test_runner
 
+# Пути к Boost
+BOOST_LIB = $(BOOST_DIR)/libboost_system.a
+BOOST_INCLUDE = -I$(BOOST_DIR)/include
+
+# Сборка приложения
 all: $(TARGET)
 
-test: $(TEST_TARGET)
-	@./$(TEST_TARGET)
+$(TARGET): $(SRC)
+        $(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC) $(LIBS) $(BOOST_INCLUDE)
 
-$(TARGET): $(filter-out $(BUILD_DIR)/test_%,$(OBJS))
-	$(CXX) $^ -o $@ $(LDFLAGS)
-
-$(TEST_TARGET): $(filter-out $(BUILD_DIR)/config6.o,$(OBJS))
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(BUILD_DIR):
-	@mkdir -p $@
+# Сборка тестов
+test: $(TEST_SRC)
+        $(CXX) $(CXXFLAGS) -o $(TEST_EXEC) $(TEST_SRC) $(BOOST_LIB) $(BOOST_INCLUDE) $(LIBS)
+        ./$(TEST_EXEC)
 
 clean:
-	@rm -rf $(BUILD_DIR)
+        rm -f $(TARGET) $(TEST_EXEC)
