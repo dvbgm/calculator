@@ -1,58 +1,45 @@
-.b-start {
-    background: transparent;
-    justify-content: center;
-    padding: 18px 5px;
+/* ===================================================================
+   Файл: override-shelter.css
+   Назначение: переопределить стили основного файла main.css
+   =================================================================== */
+
+/* 1. Подключаем шрифт Manrope */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+/* 2. Задаём шрифт Manrope всему содержимому виджета */
+#start-widget,
+#start-widget * {
+  font-family: 'Manrope', sans-serif !important;
 }
 
-.b-start__field-label {
-    color: #FFFF;
+/* 3. Переопределяем стили кнопок внутри виджета */
+/*    Основная кнопка в main.css обычно получает классы .s-btn и .s-btn--primary */
+#start-widget .s-btn--primary,
+#start-widget .s-btn {
+  background-color: #644844 !important; /* фон кнопки */
+  color: #ffffff    !important;         /* цвет текста на кнопке */
+  font-family: 'Manrope', sans-serif !important;
+  border: none      !important;
+  border-radius: 8px !important;
+  padding: 12px 25px !important;
+  font-weight: 600  !important;
+  font-size: 16px   !important;
+  text-transform: uppercase !important;
+  cursor: pointer   !important;
+  transition: background-color 0.2s ease-in-out !important;
 }
 
-.b-select-ghost {
-    color: #FFFF;
+/* 4. Hover-эффект для кнопки */
+#start-widget .s-btn--primary:hover,
+#start-widget .s-btn:hover {
+  background-color: #543830 !important; /* чуть более тёмный при наведении */
 }
 
-.l-main-container {
-    display: flex;
-}
-
-.b-start__field .b-select-ghost {
-    width: 200px;
-}
-
-.b-start__field {
-    width: 210px !important;
-}
-.b-filter{
-    background: #644844;
-}
-.b-filter__title{
-    color: #FFF;
-}
-.b-filter__field-label{
-    color: #FFF;
-}
-.b-roomitem__field--label{
-    color: #FFF;
-}
-@media (max-width:1127px) {
-    .l-main-container {
-        flex-direction: column;
-    }
-}
-
-@media screen and (max-width: 1127px){
-.l-progress.state-step-1 + .l-main-container .b-mob-top-bar--fixed {
-    height: 46px;
-    position: relative;
-    width: 100%;
-}
-.l-filters{
-    padding-top: 89px;
-}
-}
-@media screen and (max-width: 365px){
-.b-mob-top-bar__content {
-    justify-content: center;
-}
-}
+/* ===================================================================
+   При необходимости можно добавить здесь ещё какие-нибудь override:
+   Например, для ссылок, инпутов или прочих элементов виджета.
+   Но для заданной задачи достаточно указанных выше трёх пунктов:
+     1) шрифт Manrope
+     2) фон кнопки  #644844
+     3) цвет текста   #FFFFFF
+   =================================================================== */
