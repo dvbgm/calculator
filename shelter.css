@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+/* 2. Принудительно задаём шрифт Manrope всему блоку .b-start (виджету) */
+.b-start,
+.b-start * {
+  font-family: 'Manrope', sans-serif !important;
+}
+
+/* 3. Стилизация кнопки внутри виджета:
+      - фон: #644844
+      - цвет текста: #FFFFFF
+   Предполагаем, что кнопка находится внутри .b-start__submit-field */
+.b-start__submit-field button,
+.b-start__submit-field input[type="submit"] {
+  background-color: #644844 !important;
+  color: #ffffff !important;
+  font-family: 'Manrope', sans-serif !important;
+  padding: 12px 25px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+}
