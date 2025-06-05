@@ -1,172 +1,24 @@
-/* ==================================================
-   Подключаем шрифт Manrope (из Google Fonts)
-   ================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
-
-/* ==================================================
-   1. Общие стили для контейнера виджета FD24
-   (аналогично .b-start в оригинале)
-   ================================================== */
-.b-start {
-    display: flex;
-    flex-wrap: wrap;
-    background: transparent;
-    justify-content: center;
-    padding: 18px 5px;
-    font-family: 'Manrope', sans-serif !important;
+#start-widget,
+#start-widget * {
+  font-family: 'Manrope', sans-serif !important;
 }
 
-/* Все вложенные элементы внутри .b-start наследуют Manrope */
-.b-start *,
-.b-start *::before,
-.b-start *::after {
-    font-family: 'Manrope', sans-serif !important;
+/* 3. Стили для основной кнопки (.s-btn--primary) внутри #start-widget */
+#start-widget .s-btn--primary {
+  background-color: #644844 !important;
+  color: #ffffff !important;
+  font-family: 'Manrope', sans-serif !important;
+  padding: 12px 25px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  text-transform: uppercase !important;
+  transition: background-color 0.2s ease-in-out;
 }
 
-/* ==================================================
-   2. Стили для полей (даты, гостей и т. д.)
-   ================================================== */
-
-/* Цвет подписи над полем (лейбл) */
-.b-start__field-label {
-    color: #fff; /* если фон .b-start цветной или тёмный, лейблы будут белыми */
-    font-weight: 500;
-}
-
-/* Селектор “призрачного” дропдауна (.b-select-ghost) */
-.b-select-ghost {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1); /* слегка полу-прозрачный фон (опционально) */
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* Текст внутри .b-select-ghost (например, “5 июня 2025”) */
-.b-select-ghost .b-select-ghost-content {
-    color: #fff;
-    font-size: 14px;
-}
-
-/* Иконка календаря слева от текста даты */
-.b-select-ghost .icon-calendar {
-    margin-right: 6px;
-    color: #fff;
-    font-size: 16px;
-    vertical-align: middle;
-}
-
-/* Ширина полей (можно скорректировать под дизайн) */
-.b-start__field {
-    width: 210px !important;
-    margin-right: 12px;
-}
-
-/* При наведении на .b-start__field меняем фон (опционально) */
-.b-start__field:hover .b-select-ghost {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* ==================================================
-   3. Стили для кнопки отправки (Submit)
-   (аналог .b-start__submit-field в оригинале)
-   ================================================== */
-
-/* Контейнер кнопки располагаем в конце (если используете flex) */
-.b-start__submit-field {
-    display: flex;
-    align-items: center;
-}
-
-/* Сама кнопка FD24 (внутри .b-start__submit-field) */
-.b-start__submit-field button,
-.b-start__submit-field input[type="submit"],
-.b-start .fd24-btn,
-.b-start .fd24-button {
-    background-color: #644844 !important; /* основной фон кнопки */
-    color: #ffffff !important;             /* цвет текста на кнопке */
-    font-family: 'Manrope', sans-serif !important;
-    padding: 12px 25px !important;
-    border-radius: 8px !important;
-    border: none !important;
-    font-weight: 600 !important;
-    font-size: 16px !important;
-    cursor: pointer !important;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-/* При наведении курсора на кнопку */
-.b-start__submit-field button:hover,
-.b-start__submit-field input[type="submit"]:hover,
-.b-start .fd24-btn:hover,
-.b-start .fd24-button:hover {
-    background-color: #543830 !important;
-}
-
-/* ==================================================
-   4. (Опционально) Стили для “фильтра” (если он используется)
-   (аналогично классам .b-filter в оригинале)
-   ================================================== */
-
-.b-filter {
-    background: #013313;
-    padding: 15px;
-}
-
-.b-filter__title {
-    color: #fff;
-    font-size: 18px;
-    margin-bottom: 10px;
-    font-weight: 600;
-    font-family: 'Manrope', sans-serif !important;
-}
-
-.b-filter__field-label {
-    color: #fff;
-    font-size: 14px;
-    margin-bottom: 6px;
-    font-family: 'Manrope', sans-serif !important;
-}
-
-/* ==================================================
-   5. Адаптив (media queries), чтобы всё не “поплыло”
-   ================================================== */
-
-@media (max-width: 1127px) {
-    /* На узких экранах делаем .b-start колоночным */
-    .b-start {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    /* Поле “дата + гости” растягиваем на 100% */
-    .b-start__field {
-        width: 100% !important;
-        margin-right: 0;
-        margin-bottom: 12px;
-    }
-
-    /* Кнопка “Забронировать” выравниваем по центру */
-    .b-start__submit-field {
-        justify-content: center;
-        margin-top: 10px;
-    }
-}
-
-@media (max-width: 365px) {
-    /* Центрируем контент внутри .b-start, если очень узко */
-    .b-start {
-        padding: 12px 10px;
-    }
-    .b-select-ghost {
-        font-size: 13px;
-        padding: 6px 10px;
-    }
-    .b-start__submit-field button,
-    .b-start__submit-field input[type="submit"] {
-        padding: 10px 20px !important;
-        font-size: 14px !important;
-    }
+/* 4. Hover-эффект для кнопки */
+#start-widget .s-btn--primary:hover {
+  background-color: #543830 !important;
 }
